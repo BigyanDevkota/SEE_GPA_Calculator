@@ -14,14 +14,12 @@ String optional_message() {
   optII = stdin.readLineSync()!;
   opt2nd = optII.toLowerCase();
 
-  return opt2nd;
-
-  // if (opt2nd == 'computer' || opt2nd == 'account') {
-  //   return opt2nd;
-  // } else {
-  //   print('type correctly\n');
-  //   return optional_message();
-  // }
+  if (opt2nd == 'computer' || opt2nd == 'account') {
+    return opt2nd;
+  } else {
+    print('type correctly\n');
+    return optional_message();
+  }
 }
 
 void getinfo() {
@@ -32,73 +30,79 @@ void getinfo() {
       req_grade4,
       req_grade5,
       req_grade6,
-      req_grade7,
-      req_grade8;
+      req_grade;
   String opt2nd_sub;
+  num last_ride;
 
   print('\n');
 
   opt2nd_sub = optional_message();
 
-  print('Write your marks in the following subjects:\n');
+  print('\nWrite your marks in the following subjects:');
 
   print("English");
   eng = num.parse(stdin.readLineSync()!);
-  req_grade1 = grade_point_calculator(eng, "english");
+  req_grade1 = grade_point_calculator(eng, "English");
   numerator(req_grade1, 'English');
 
   print("Nepali");
   nep = num.parse(stdin.readLineSync()!);
-  req_grade2 = grade_point_calculator(nep, "nepali");
+  req_grade2 = grade_point_calculator(nep, "Nepali");
   numerator(req_grade2, 'Nepali');
 
   print("Social");
   soc = num.parse(stdin.readLineSync()!);
-  req_grade3 = grade_point_calculator(soc, "social");
+  req_grade3 = grade_point_calculator(soc, "Social");
   numerator(req_grade3, 'Social');
 
   print("Science");
   sci = num.parse(stdin.readLineSync()!);
-  req_grade4 = grade_point_calculator(sci, "science");
+  req_grade4 = grade_point_calculator(sci, "Science");
   numerator(req_grade4, 'Science');
 
   print("Compulsory Maths");
   maths = num.parse(stdin.readLineSync()!);
-  req_grade5 = grade_point_calculator(maths, "c.maths");
+  req_grade5 = grade_point_calculator(maths, "C.Maths");
   numerator(req_grade5, 'C.Maths');
 
   print("Optional 1");
   opt1 = num.parse(stdin.readLineSync()!);
-  req_grade6 = grade_point_calculator(opt1, "optional1");
+  req_grade6 = grade_point_calculator(opt1, "Optional1");
   numerator(req_grade6, 'Optional1');
 
   if (opt2nd_sub == 'computer') {
     print("Computer");
     comp = num.parse(stdin.readLineSync()!);
-    req_grade7 = grade_point_calculator(comp, "computer");
-    num last_ride = numerator(req_grade7, 'Computer');
-    final_function(last_ride);
+    req_grade = grade_point_calculator(comp, "Computer");
+    last_ride = numerator(req_grade, 'Computer');
   } else {
     print("Accountancy");
     acc = num.parse(stdin.readLineSync()!);
-    req_grade8 = grade_point_calculator(acc, "account");
-    num last_ride = numerator(req_grade8, 'Accountancy');
+    req_grade = grade_point_calculator(acc, "Account");
+    last_ride = numerator(req_grade, 'Account');
+  }
+
+  if (req_grade1 == 0.00 ||
+      req_grade2 == 0.00 ||
+      req_grade3 == 0.00 ||
+      req_grade4 == 0.00 ||
+      req_grade5 == 0.00 ||
+      req_grade6 == 0.00 ||
+      req_grade == 0.00) {
+    final_function(0);
+  } else {
     final_function(last_ride);
   }
 }
 
 num grade_point_calculator(var obtained_marks, String subject) {
   var grade_point;
-  if (subject == "computer") {
+  if (subject == "Computer") {
     grade_point = fifty(obtained_marks);
-    return grade_point;
-  } else if (subject == "opt1") {
-    grade_point = hundred(obtained_marks);
-    return grade_point;
   } else {
     grade_point = seventyfive(obtained_marks);
-    return grade_point;
   }
+  return grade_point;
 }
 
 // for 50 marks subjects
@@ -143,27 +147,6 @@ num seventyfive(num marks) {
   }
 }
 
-// for 100 marks subjects
-num hundred(num marks) {
-  if (90 <= marks && marks <= 100) {
-    return 4.0;
-  } else if (80 <= marks && marks < 90) {
-    return 3.6;
-  } else if (70 <= marks && marks < 80) {
-    return 3.2;
-  } else if (60 <= marks && marks < 70) {
-    return 2.8;
-  } else if (50 <= marks && marks < 60) {
-    return 2.4;
-  } else if (40 <= marks && marks < 50) {
-    return 2.0;
-  } else if (35 <= marks && marks < 40) {
-    return 1.6;
-  } else {
-    return 0.0;
-  }
-}
-
 Map credit_hours = {
   'English': {
     'theory': 3.75,
@@ -189,13 +172,13 @@ Map credit_hours = {
     'theory': 2,
     'practical': 2,
   },
-  'Accountancy': {
+  'Account': {
     'theory': 3,
     'practical': 1,
   },
   'Optional1': {
-    'theory': 4,
-    'practical': 0,
+    'theory': 3,
+    'practical': 1,
   },
 };
 
@@ -214,12 +197,13 @@ num numerator(num GP, String subject) {
   return new_summation;
 }
 
-void final_function(num final_value) {
+void final_function(var final_value) {
   var GPA;
   String grade;
   num total_credit_hours_of_class = 32;
+
   GPA = final_value / total_credit_hours_of_class;
-  print("Your GPA is: $GPA\n");
+  print("\nYour GPA is: ${GPA.toStringAsFixed(2)}");
   grade = grade_function(GPA);
   print('You Scored $grade');
 }
